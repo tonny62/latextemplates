@@ -1,0 +1,47 @@
+\begin{document}
+
+    \chapter{Chapter 1}
+        \section{Section 1}
+
+            \paragraph{}
+                Paragraph 1
+
+            \paragraph{}
+                Paragraph 2
+
+            %% enumeration
+            \begin{enumerate}
+            	\item Item 1
+            	\begin{enumerate}
+            		\item Sub item1
+            		\item Sub item2
+            	\end{enumerate}
+            \end{enumerate}
+
+            %% insert figure
+            \begin{center}
+              \begin{figure}
+                \includegraphics{ch3_1}
+                \caption{System Detail}
+                \label{sysdetail}
+              \end{figure}
+            \end{center}
+
+            %% code listing
+            \ttfamily
+              \begin{lstlisting}[language=SQL]
+              DELIMITER $$
+              CREATE DEFINER=`root`@`localhost` PROCEDURE `assignroomtobooking`(IN `datein` DATE, IN `dateout` DATE, IN `type` INT, OUT `roomid` INT)
+              BEGIN
+                SELECT room.idroom as roomid FROM room WHERE (room.idroom
+                  NOT IN (
+                    SELECT booking.room_idroom FROM booking
+                    WHERE (booking.fromdate < datein AND booking.todate > datein)
+                      OR (booking.fromdate between datein AND dateout - INTERVAL 1 DAY))
+                        AND room.status = 'open' AND room.roomtype_idroomtype = type) LIMIT 1;
+              END$$
+              DELIMITER ;
+              \end{lstlisting}
+              \rmfamily
+
+\end{document}
